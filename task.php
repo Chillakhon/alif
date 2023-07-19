@@ -28,7 +28,7 @@ class File {
         return $fileForWriting;
     }
 
-    public function addLine(string $line)
+    public function add(string $line)
     {
         $openFileForWriting = $this->getOpenFileForWriting();
         fwrite($openFileForWriting, $line . PHP_EOL);
@@ -40,4 +40,7 @@ class File {
 
 $objFile = new File(fileName: $fileName, action: $action);
 $objFile->$action($line);
+
+$lines = explode("\n",file_get_contents("products.txt"));
+var_dump($lines);
 
