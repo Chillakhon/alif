@@ -43,11 +43,11 @@ class Products
     public function edit($productName, $newPrice)
     {
         $products = $this->getProductsFromFile();// Получаем все записи из файла в виде массива
-
         foreach ($products as $key => $product) {
-            $product = explode('-', $product);
+            $product = explode('-',$product);
 
             $productNameForFile = $product[0]; //Получаем название продукта из файла
+
 
             if ($productNameForFile == $productName) {
                 $productPrice = $newPrice;
@@ -60,12 +60,35 @@ class Products
             }
         }
     }
+    public function delete($productName)
+    {
+        $products = $this->getProductsFromFile();// Получаем все записи из файла в виде массива
+
+        foreach ($products as $key => $product) {
+            if (empty(trim($product))) {
+                continue;
+            }
+            $product = explode('-', $product); // Получаем название и цену продукта в виде массива
+            $productNameForFile = trim($product[0]); //Получаем отдельно название продукта
+
+            if ($productNameForFile == trim($productName)) {
+                unset($products[$key]); // Удаляем продукт из массива
+                file_put_contents($this->fileName, $products);// Обратно записываем в файл все оставшиеся продукты
+                exit('Продукт удален');
+            }
+        }
+    }
+
+
 }
 
 $fileName = $argv[1]; // Название файла
 $action = $argv[2] ?? null; // Действие
 $data = $argv[3] ?? null; // Данные, которую записываем в файл
 $newPrice = $argv[4] ?? null; //Новая цена которую будем устанавливать для продукта
+$delete = $argv[5] ?? null; //
+
+
 
 $objFile = new Products(fileName: $fileName, action: $action);
 
