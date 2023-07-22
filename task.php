@@ -44,7 +44,7 @@ class Products
     {
         $products = $this->getProductsFromFile();// Получаем все записи из файла в виде массива
         foreach ($products as $key => $product) {
-            $product = explode('-',$product);
+            $product = explode('-', $product);
 
             $productNameForFile = $product[0]; //Получаем название продукта из файла
 
@@ -60,6 +60,7 @@ class Products
             }
         }
     }
+
     public function delete($productName)
     {
         $products = $this->getProductsFromFile();// Получаем все записи из файла в виде массива
@@ -79,15 +80,31 @@ class Products
         }
     }
 
+    public function allprice($allPrice)
+    {
 
+        $products = $this->getProductsFromFile();// Получаем все записи из файла в виде массива
+
+        foreach ($products as $key => $product) {
+            if (empty(trim($product))) {
+                continue;
+            }
+            $product = explode('-', $product); // Получаем название и цену продукта в виде массива
+            $productPriceForFile = trim($product[1]); //Получаем отдельно цену
+            $all = trader_sum($productPriceForFile);
+
+        }
+    }
 }
+
+
 
 $fileName = $argv[1]; // Название файла
 $action = $argv[2] ?? null; // Действие
 $data = $argv[3] ?? null; // Данные, которую записываем в файл
 $newPrice = $argv[4] ?? null; //Новая цена которую будем устанавливать для продукта
 $delete = $argv[5] ?? null; //
-
+$allPrice = $argv[6] ?? null; //
 
 
 $objFile = new Products(fileName: $fileName, action: $action);
